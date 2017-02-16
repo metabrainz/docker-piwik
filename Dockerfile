@@ -22,12 +22,12 @@ RUN apt-get update -q && \
 RUN mkdir /etc/service/nginx
 ADD runit/nginx.sh /etc/service/nginx/run
 
-RUN mkdir /etc/service/php5-fpm
-ADD runit/php5-fpm.sh /etc/service/php5-fpm/run
+RUN mkdir /etc/service/php-fpm
+ADD runit/php-fpm.sh /etc/service/php-fpm/run
 
 ADD config/nginx.conf /etc/nginx/nginx.conf
 ADD config/nginx-default.conf /etc/nginx/sites-available/default
-ADD config/php.ini /etc/php5/fpm/php.ini
+ADD config/php.ini /etc/php/7.0/fpm/php.ini
 
 RUN cd /usr/share/nginx/html && \
     export PIWIK_VERSION=3.0.1 && \
