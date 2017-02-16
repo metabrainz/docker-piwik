@@ -11,12 +11,12 @@ RUN apt-get update -q && \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN echo "deb http://ppa.launchpad.net/nginx/development/ubuntu $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/nginx-development.list
+RUN echo "deb http://ppa.launchpad.net/nginx/development/ubuntu $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/nginx-development.list
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
 RUN add-apt-repository universe && add-apt-repository multiverse
 RUN apt-get update -q && \
-    apt-get install --no-install-suggests -qy mysql-client nginx php5-cli php5-gd php5-fpm php5-json \
-                        php5-mysql php5-curl wget && \
+    apt-get install --no-install-suggests -qy mysql-client nginx php7.0-cli php7.0-gd php7.0-fpm php7.0-json \
+                        php7.0-mysql php7.0-curl wget && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN mkdir /etc/service/nginx
