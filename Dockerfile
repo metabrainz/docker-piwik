@@ -38,8 +38,8 @@ RUN cd /usr/share/nginx/html && \
     rm -r piwik && \
     chown -R www-data:www-data /usr/share/nginx/html && \
     chmod 0770 /usr/share/nginx/html/tmp && \
-    chmod 0770 /usr/share/nginx/html/config && \
-    chmod 0600 /usr/share/nginx/html/config/* && \
+    find /usr/share/nginx/html/config -type d -exec chmod 770 {} \; && \
+    find /usr/share/nginx/html/config -type f -exec chmod 660 {} \; && \
     rm /usr/share/nginx/html/index.html
 
 # Install MaxMind GeoCity Lite database
