@@ -31,7 +31,7 @@ ADD config/php.ini /etc/php/7.0/fpm/php.ini
 
 RUN cd /usr/share/nginx/html && \
     export PIWIK_VERSION=3.0.1 && \
-    wget http://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz && \
+    wget -q http://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz && \
     tar -xzf piwik-${PIWIK_VERSION}.tar.gz && \
     rm piwik-${PIWIK_VERSION}.tar.gz && \
     mv piwik/* . && \
@@ -44,7 +44,7 @@ RUN cd /usr/share/nginx/html && \
 
 # Install MaxMind GeoCity Lite database
 RUN cd /usr/share/nginx/html/misc && \
-    wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && \
+    wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && \
     gunzip GeoLiteCity.dat.gz && \
     chown www-data:www-data GeoLiteCity.dat && \
 	mv GeoLiteCity.dat GeoIPCity.dat
