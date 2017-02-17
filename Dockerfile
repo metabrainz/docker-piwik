@@ -50,5 +50,7 @@ ADD config/piwik-schema.sql /usr/share/nginx/piwik-base-schema.sql
 
 ADD scripts/generate-certs.sh /etc/my_init.d/05-certs.sh
 ADD scripts/init-piwik.sh /etc/my_init.d/10-piwik.sh
+ADD scripts/dump_piwik_schema /usr/local/sbin/dump_piwik_schema
+ADD scripts/dump_piwik_db /usr/local/sbin/dump_piwik_db
 
 RUN touch /etc/service/sshd/down

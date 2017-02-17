@@ -1,0 +1,3 @@
+#!/bin/sh
+. /etc/container_environment.sh
+mysqldump --user=$DB_USER --password=$DB_PASSWORD --host=$DB_HOST --port=$DB_PORT $DB_NAME --no-data --skip-add-drop-table|sed 's/^CREATE TABLE /\0IF NOT EXISTS /'
