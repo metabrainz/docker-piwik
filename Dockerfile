@@ -46,7 +46,7 @@ RUN wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.g
     chown www-data:www-data GeoLiteCity.dat && \
 	mv GeoLiteCity.dat /usr/share/nginx/html/misc/GeoIPCity.dat
 
-ADD config/piwik-schema.sql /usr/share/nginx/html/config/base-schema.sql
+ADD config/piwik-schema.sql /usr/share/nginx/piwik-base-schema.sql
 
 ADD scripts/generate-certs.sh /etc/my_init.d/05-certs.sh
 ADD scripts/init-piwik.sh /etc/my_init.d/10-piwik.sh

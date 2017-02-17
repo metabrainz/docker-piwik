@@ -67,7 +67,7 @@ chown www-data:www-data $CONFIG_FILE
 
 if [ ! -z $PIWIK_SEED_DATABASE ]; then
   mysql --user=$DB_USER --password=$DB_PASSWORD --host=$DB_HOST \
-        --port=$DB_PORT -D $DB_NAME < /usr/share/nginx/html/config/base-schema.sql
+        --port=$DB_PORT -D $DB_NAME < /usr/share/nginx/piwik-base-schema.sql
   SITE_SQL=$(cat <<EOF
         INSERT INTO \`piwik_site\`
         VALUES (1,
@@ -90,6 +90,7 @@ EOF
 )
   echo $SITE_SQL | mysql --user=$DB_USER --password=$DB_PASSWORD --host=$DB_HOST \
         --port=$DB_PORT -D $DB_NAME
+  rm -f /usr/share/nginx/piwik-base-schema.sql
 fi
 
 if [ ! -z $PIWIK_USER ] && [ ! -z $PIWIK_PASSWORD ]; then
