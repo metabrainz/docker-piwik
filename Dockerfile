@@ -29,13 +29,11 @@ ADD config/nginx.conf /etc/nginx/nginx.conf
 ADD config/nginx-default.conf /etc/nginx/sites-available/default
 ADD config/php.ini /etc/php/7.0/fpm/php.ini
 
-RUN cd /usr/share/nginx/html && \
-    export PIWIK_VERSION=3.0.1 && \
-    wget -q http://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz && \
-    tar -xzf piwik-${PIWIK_VERSION}.tar.gz && \
-    rm piwik-${PIWIK_VERSION}.tar.gz && \
-    mv piwik/* . && \
-    rm -r piwik && \
+WORKDIR /tmp
+RUN export PIWIK_VERSION=3.0.1 && \
+    wget -q http://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz -O piwik.tar.gz && \
+    tar --strip-components=1 -C /usr/share/nginx/html -x -z -f piwik.tar.gz piwik/ && \
+    rm piwik.tar.gz && \
     chown -R www-data:www-data /usr/share/nginx/html && \
     chmod 0770 /usr/share/nginx/html/tmp && \
     find /usr/share/nginx/html/config -type d -exec chmod 770 {} \; && \
@@ -43,11 +41,10 @@ RUN cd /usr/share/nginx/html && \
     rm /usr/share/nginx/html/index.html
 
 # Install MaxMind GeoCity Lite database
-RUN cd /usr/share/nginx/html/misc && \
-    wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && \
+RUN wget -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && \
     gunzip GeoLiteCity.dat.gz && \
     chown www-data:www-data GeoLiteCity.dat && \
-	mv GeoLiteCity.dat GeoIPCity.dat
+	mv GeoLiteCity.dat /usr/share/nginx/html/misc/GeoIPCity.dat
 
 ADD config/piwik-schema.sql /usr/share/nginx/html/config/base-schema.sql
 
