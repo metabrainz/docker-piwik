@@ -80,6 +80,7 @@ if [ ! -z $PIWIK_SEED_DATABASE ]; then
                 '',
                 'UTC',
                 'USD',
+                0,
                 '',
                 '',
                 '',
