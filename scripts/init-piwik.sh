@@ -66,9 +66,9 @@ cat $CONFIG_FILE
 chown www-data:www-data $CONFIG_FILE
 
 if [ ! -z $PIWIK_SEED_DATABASE ]; then
-  mysql --user=$DB_USER --password=$DB_PASSWORD --host=$DB_HOST \
-        --port=$DB_PORT -D $DB_NAME < /usr/share/nginx/piwik-base-schema.sql
-  SITE_SQL=$(cat <<EOF
+  MYCMD="mysql --user=$DB_USER --password=$DB_PASSWORD --host=$DB_HOST --port=$DB_PORT -D $DB_NAME"
+  $MYCMD < /usr/share/nginx/piwik-base-schema.sql
+  $MYCMD <<EOF
         INSERT INTO \`piwik_site\`
         VALUES (1,
                 'Example Piwik Site',
@@ -87,26 +87,18 @@ if [ ! -z $PIWIK_SEED_DATABASE ]; then
                 'website',
                 0);
 EOF
-)
-  echo $SITE_SQL | mysql --user=$DB_USER --password=$DB_PASSWORD --host=$DB_HOST \
-        --port=$DB_PORT -D $DB_NAME
-  rm -f /usr/share/nginx/piwik-base-schema.sql
-fi
 
-if [ ! -z $PIWIK_USER ] && [ ! -z $PIWIK_PASSWORD ]; then
-  HASHED_PW=$(php -r 'print(md5("'"${PIWIK_PASSWORD}"'"));')
-  USER_SQL=$(cat <<EOF
-        INSERT INTO \`piwik_user\`
-        VALUES ('$PIWIK_USER',
-                '$HASHED_PW',
-                '$PIWIK_USER',
-                '${PIWIK_USER}@example.com',
-                '$HASHED_PW',
-                1,
-                '2014-11-01 12:00:00');
+  if [ ! -z $PIWIK_USER ] && [ ! -z $PIWIK_PASSWORD ]; then
+    HASHED_PW=$(php -r 'print(md5("'"${PIWIK_PASSWORD}"'"));')
+    $MYCMD <<EOF
+          INSERT INTO \`piwik_user\`
+          VALUES ('$PIWIK_USER',
+                  '$HASHED_PW',
+                  '$PIWIK_USER',
+                  '${PIWIK_USER}@example.com',
+                  '$HASHED_PW',
+                  1,
+                  '2014-11-01 12:00:00');
 EOF
-)
-  echo $USER_SQL;
-  echo $USER_SQL | mysql --user=$DB_USER --password=$DB_PASSWORD --host=$DB_HOST \
-        --port=$DB_PORT -D $DB_NAME
+  fi
 fi
