@@ -69,7 +69,7 @@ if [ ! -z $PIWIK_SEED_DATABASE ]; then
   MYCMD="mysql --user=$DB_USER --password=$DB_PASSWORD --host=$DB_HOST --port=$DB_PORT -D $DB_NAME"
   $MYCMD < /usr/share/nginx/piwik-base-schema.sql
   $MYCMD <<EOF
-        INSERT INTO \`piwik_site\`
+        INSERT IGNORE INTO \`piwik_site\`
         VALUES (1,
                 'Example Piwik Site',
                 'http://www.example.com',
@@ -91,7 +91,7 @@ EOF
   if [ ! -z $PIWIK_USER ] && [ ! -z $PIWIK_PASSWORD ]; then
     HASHED_PW=$(php -r 'print(md5("'"${PIWIK_PASSWORD}"'"));')
     $MYCMD <<EOF
-          INSERT INTO \`piwik_user\`
+          INSERT IGNORE INTO \`piwik_user\`
           VALUES ('$PIWIK_USER',
                   '$HASHED_PW',
                   '$PIWIK_USER',
